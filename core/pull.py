@@ -3,6 +3,8 @@ from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
+from selenium.webdriver.firefox.options import Options as firefoxOptions
+from selenium.webdriver.chrome.options import Options as chromeOptions
 import os
 
 class DataPuller:
@@ -10,13 +12,17 @@ class DataPuller:
         self.browser_name = browser_name
         self.driver_path = driver_path
 
+        self.download_dir = os.path.abspath("./stathat-downloads")
+        if not os.path.exists(self.download_dir):
+            os.mkdir(self.download_dir)
+    
         self._initialize_driver()
     
     def _initialize_driver(self):
         if self.browser_name.lower() == "chrome":
             if self.driver_path:
                 os.environ["PATH"] += os.pathsep + self.driver_path
-            chrome_options = webdriver.ChromeOptions()
+            chrome_options = chromeOptions()
             prefs = {
                 "download.default_directory": os.path.expanduser("./stathat-downloads"),
                 "download.prompt_for_download": False,
@@ -25,16 +31,16 @@ class DataPuller:
             }
             chrome_options.add_experimental_option("prefs", prefs)
             self.driver = webdriver.Chrome(options=chrome_options)
-            self.driver = webdriver.Chrome()
         elif self.browser_name.lower() == "firefox":
             if self.driver_path:
                 os.environ["PATH"] += os.pathsep + self.driver_path
-            firefox_options = webdriver.FirefoxOptions()
+            firefox_options = firefoxOptions()
             firefox_options.set_preference("browser.download.folderList", 2)
             firefox_options.set_preference("browser.download.manager.showWhenStarting", False)
-            firefox_options.set_preference("browser.download.dir", os.path.expanduser("./stathat-downloads"))
+            firefox_options.set_preference("browser.download.dir", self.download_dir)
+            firefox_options.set_preference("browser.download.useDownloadDir", True)
             firefox_options.set_preference("browser.helperApps.neverAsk.saveToDisk", 
-                                      "application/pdf,text/csv,application/csv,application/vnd.ms-excel,application/zip")
+                                      "application/pdf,text/csv,application/csv,application/vnd.ms-excel,application/zip,application/octet-stream,application/dmg") # app/dmg debug stuff 
             self.driver = webdriver.Firefox(options=firefox_options)
         else:
             raise ValueError(f"Unsupported browser: {self.browser_name}")
@@ -54,6 +60,7 @@ class DataPuller:
         elm.click()
     
     def download_file(self, download_locator, wait_time=45):
+        '''Throw in a while loop to make a loading bar or something like that, don't allow ".close()" to run during download'''
         import time
         download_dir = os.path.expanduser("./stathat-downloads")
         before_download = set(os.listdir(download_dir))
@@ -77,6 +84,7 @@ class DataPuller:
         raise TimeoutError(f"Download did not complete within {wait_time} seconds")
     
     def wait_for_download(self, file, timeout=45):
+        '''Kinda pointless not gonna lie, rip :( '''
         import time
         download_dir = os.path.expanduser("./stathat-downloads")
         filepath = os.path.join(download_dir, file)
