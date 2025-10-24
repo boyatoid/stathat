@@ -18,7 +18,7 @@ class DataPuller:
                 os.environ["PATH"] += os.pathsep + self.driver_path
             chrome_options = webdriver.ChromeOptions()
             prefs = {
-                "download.default_directory": os.path.expanduser("./stathat_downloads"),
+                "download.default_directory": os.path.expanduser("./stathat-downloads"),
                 "download.prompt_for_download": False,
                 "download.directory_upgrade": True,
                 "safebrowsing.enabled": True
@@ -45,15 +45,17 @@ class DataPuller:
     def title(self):
         return self.driver.title
     
-    def find_elm(self, locator, timeout=15):
-        return WebDriverWait(self.driver, timeout).until(EC.presence_of_element_located(locator))
+    def find_elm_by_PARTEXT(self, locator, timeout=30):
+        print("Finding Element...")
+        return WebDriverWait(self.driver, timeout).until(EC.presence_of_element_located((By.PARTIAL_LINK_TEXT, locator)))
 
-    def click_elm(self, locator):
-        self.find_elm(locator).click()
+    def click_elm(self, elm):
+        '''Pass in a selenium.webdriver.remote.webelement.WebElement'''
+        elm.click()
     
     def download_file(self, download_locator, wait_time=45):
         import time
-        download_dir = os.path.expanduser("./stathat_downloads")
+        download_dir = os.path.expanduser("./stathat-downloads")
         before_download = set(os.listdir(download_dir))
 
         self.click_elm(download_locator)
@@ -76,7 +78,7 @@ class DataPuller:
     
     def wait_for_download(self, file, timeout=45):
         import time
-        download_dir = os.path.expanduser("./stathat_downloads")
+        download_dir = os.path.expanduser("./stathat-downloads")
         filepath = os.path.join(download_dir, file)
 
         start_time = time.time()
