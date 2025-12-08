@@ -2,22 +2,9 @@ import csv
 import matplotlib.pyplot as plt
 import wget
 import os
+from core import pull
 
 
-def get_data():
-    print("1: URL")
-    print("2: File name")
-    choice = input("Do you have a URL or file name?\n")
-    if int(choice) == 1:
-        plot = input("Enter URL for CSV file\n")
-        current_dir = os.getcwd()
-        file_name = 'downloaded_data.csv'
-        file_path = os.path.join(current_dir, file_name)
-        wget.download(plot, file_path)
-        print(f"\nFile downloaded and saved to {file_path}")
-    elif int(choice) == 2:
-        file_name = input("Enter CSV file name:\n")
-    return file_name
 
 
 
@@ -63,18 +50,14 @@ def show_graphs(data):
         plt.plot(x, y)
         plt.title("Line Graph")
         plt.show()
-        file_path = "line.png"
-    
-        # Save
-        plt.savefig(file_path)
 
     elif choice == "2":
         plt.scatter(x, y)
         plt.title("Scatter Graph")
         plt.show()
-        file_path = "scatter.png"
+        file_path = "bar_graph.png"
     
-        # Save
+        # Save the plot as a PNG file
         plt.savefig(file_path)
 
     elif choice == "3":
@@ -83,7 +66,7 @@ def show_graphs(data):
         plt.show()
         file_path = "bar_graph.png"
     
-        # Save
+        # Save the plot as a PNG file
         plt.savefig(file_path)
 
     elif choice == "4":
@@ -105,7 +88,21 @@ def show_graphs(data):
         print("Invalid choice.")
 
 #Main Program
-filename = get_data()
+dp = pull.DataPuller()
+url = input("What is the URL?\n")
+element = input("What is the element where the download link is?\n")
+try:
+    dp.goto_url(url)
+
+    download_button = dp.find_elm_by_PARTEXT(element)
+
+    file_path = dp.download_file(download_button, wait_time=60)
+
+    print("Download complete:", file_path)
+
+finally:
+    filename = "stathat-downloads/" + element
+    dp.close()
 data = load_csv(filename)
 
 print("\nFirst 5 rows:")
