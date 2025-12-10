@@ -1,11 +1,19 @@
 import csv
 import matplotlib.pyplot as plt
+import wget
+import os
+from core import pull
+
+
+
 
 
 def load_csv(filename):
     data = []
     with open(filename, "r") as f:
         reader = csv.reader(f)
+
+        header = next(reader)
         for row in reader:
             converted = []
             for cell in row:
@@ -47,11 +55,19 @@ def show_graphs(data):
         plt.scatter(x, y)
         plt.title("Scatter Graph")
         plt.show()
+        file_path = "bar_graph.png"
+    
+        # Save the plot as a PNG file
+        plt.savefig(file_path)
 
     elif choice == "3":
         plt.bar(x, y)
         plt.title("Bar Graph")
         plt.show()
+        file_path = "bar_graph.png"
+    
+        # Save the plot as a PNG file
+        plt.savefig(file_path)
 
     elif choice == "4":
         fig, axs = plt.subplots(3, 1, figsize=(6, 10))
@@ -72,8 +88,21 @@ def show_graphs(data):
         print("Invalid choice.")
 
 #Main Program
-filename = input("Enter the CSV file name: ")
+dp = pull.DataPuller()
+url = input("What is the URL?\n")
+element = input("What is the element where the download link is?\n")
+try:
+    dp.goto_url(url)
 
+    download_button = dp.find_elm_by_PARTEXT(element)
+
+    file_path = dp.download_file(download_button, wait_time=60)
+
+    print("Download complete:", file_path)
+
+finally:
+    filename = "stathat-downloads/" + element
+    dp.close()
 data = load_csv(filename)
 
 print("\nFirst 5 rows:")
