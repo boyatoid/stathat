@@ -104,11 +104,13 @@ try:
         print(f'found element: {element}')
         download_button = element
 
+    print("downloading file...")
     file_path = dp.download_file(download_button, wait_time=60)
 
     print("Download complete:", file_path)
 
 finally:
+    os.system('clear' if os.name == 'posix' or 'unix' else 'cls')
     print("finishing up...")
     dp.close()
 
