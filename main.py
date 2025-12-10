@@ -1,7 +1,7 @@
 import csv
 import matplotlib.pyplot as plt
-import wget
 import os
+import re
 from core import pull
 
 
@@ -90,20 +90,29 @@ def show_graphs(data):
 #Main Program
 dp = pull.DataPuller()
 url = input("What is the URL?\n")
-element = input("What is the element where the download link is?\n")
 try:
     dp.goto_url(url)
-
-    download_button = dp.find_elm_by_PARTEXT(element)
+    page_source = dp.grab_source()
+    print('attempting to find element via data format tag...')
+    if dp.find_elm_by_XPATH("//a[@data-format='csv']"):
+        element = dp.find_elm_by_XPATH("//a[@data-format='csv']")
+        print(f'found element: {element}')
+        download_button = element
+    else:
+        print('could not find element via data format tag, trying partial link text "CSV"...')
+        element = dp.find_elm_by_PARTEXT("CSV")
+        print(f'found element: {element}')
+        download_button = element
 
     file_path = dp.download_file(download_button, wait_time=60)
 
     print("Download complete:", file_path)
 
 finally:
-    filename = "stathat-downloads/" + element
+    print("finishing up...")
     dp.close()
-data = load_csv(filename)
+
+data = load_csv(file_path)
 
 print("\nFirst 5 rows:")
 for row in data[:5]:

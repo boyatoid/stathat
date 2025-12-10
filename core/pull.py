@@ -47,9 +47,16 @@ class DataPuller:
     
     def goto_url(self, url):
         self.driver.get(url)
+    
+    def grab_source(self):
+        return self.driver.page_source
 
     def title(self):
         return self.driver.title
+    
+    def find_elm_by_XPATH(self, locator, timeout=30):
+        print("Finding Element...")
+        return WebDriverWait(self.driver, timeout).until(EC.presence_of_element_located((By.XPATH, locator)))
     
     def find_elm_by_PARTEXT(self, locator, timeout=30):
         print("Finding Element...")
