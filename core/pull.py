@@ -8,9 +8,10 @@ from selenium.webdriver.chrome.options import Options as chromeOptions
 import os
 
 class DataPuller:
-    def __init__(self, browser_name="FireFox", driver_path="~/stathat"):
+    def __init__(self, browser_name="FireFox", driver_path="~/stathat", headless = False):
         self.browser_name = browser_name
         self.driver_path = driver_path
+        self.headless = headless
 
         self.download_dir = os.path.abspath("./stathat-downloads")
         if not os.path.exists(self.download_dir):
@@ -35,6 +36,7 @@ class DataPuller:
             if self.driver_path:
                 os.environ["PATH"] += os.pathsep + self.driver_path
             firefox_options = firefoxOptions()
+            if self.headless: firefox_options.add_argument("--headless")
             firefox_options.set_preference("browser.download.folderList", 2)
             firefox_options.set_preference("browser.download.manager.showWhenStarting", False)
             firefox_options.set_preference("browser.download.dir", self.download_dir)
@@ -55,11 +57,11 @@ class DataPuller:
         return self.driver.title
     
     def find_elm_by_XPATH(self, locator, timeout=30):
-        print("Finding Element...")
+        print("[+] Finding element via xpath...")
         return WebDriverWait(self.driver, timeout).until(EC.presence_of_element_located((By.XPATH, locator)))
     
     def find_elm_by_PARTEXT(self, locator, timeout=30):
-        print("Finding Element...")
+        print("[+] Finding element via partial text...")
         return WebDriverWait(self.driver, timeout).until(EC.presence_of_element_located((By.PARTIAL_LINK_TEXT, locator)))
 
     def click_elm(self, elm):
