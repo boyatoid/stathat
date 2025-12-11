@@ -121,5 +121,6 @@ class DataPuller:
         raise TimeoutError(f"File {file} did not download within {timeout} seconds")
 
     def close(self) -> None:
+        '''closes the webdriver'''
         if self.driver:
             self.driver.quit()

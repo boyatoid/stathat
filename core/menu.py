@@ -2,7 +2,7 @@ from core import logic
 logic = logic.logic()
 
 class CoreMenu:
-    def __init__(self, data):
+    def __init__(self, data: list):
         self.data = data
         self.choice = None
     

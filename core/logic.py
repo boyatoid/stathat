@@ -10,7 +10,7 @@ class logic:
         self.x = []
         self.y = []
 
-    def load_csv(self, filename) -> list:
+    def load_csv(self, filename: str) -> list:
         '''Loads CSV file and returns a readable list'''
         self.data = []
         self.filename = filename
@@ -28,7 +28,7 @@ class logic:
                 self.data.append(converted)
         return self.data
     
-    def grab_cols(self, data) -> tuple:
+    def grab_cols(self, data: list) -> tuple:
         '''Grabs two columns from the data based on user input'''
         num_cols = len(data[0])
 
