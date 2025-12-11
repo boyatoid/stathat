@@ -1,7 +1,5 @@
 from core import logic
 logic = logic.logic()
-
-
 class CoreMenu:
     def __init__(self, data):
         self.data = data
