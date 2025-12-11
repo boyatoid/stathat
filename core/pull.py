@@ -8,7 +8,7 @@ from selenium.webdriver.chrome.options import Options as chromeOptions
 import os
 
 class DataPuller:
-    def __init__(self, browser_name="FireFox", driver_path="~/stathat", headless = False):
+    def __init__(self, browser_name="FireFox", driver_path="~/stathat", headless=False):
         self.browser_name = browser_name
         self.driver_path = driver_path
         self.headless = headless
@@ -19,7 +19,7 @@ class DataPuller:
     
         self._initialize_driver()
     
-    def _initialize_driver(self):
+    def _initialize_driver(self) -> None:
         if self.browser_name.lower() == "chrome":
             if self.driver_path:
                 os.environ["PATH"] += os.pathsep + self.driver_path
@@ -47,28 +47,38 @@ class DataPuller:
         else:
             raise ValueError(f"Unsupported browser: {self.browser_name}")
     
-    def goto_url(self, url):
-        self.driver.get(url)
     
-    def grab_source(self):
+    def goto_url(self, url: str) -> None:
+        try:
+            self.driver.get(url)
+        except selenium.common.exceptions.WebDriverException as e:
+            print("[-] WebDriver Error:", e)
+            quit("[-] QUITTING... Could not load URL.")
+        except TypeError as e:
+            print("[-] Type Error: input URL is not a string.", e)
+            quit("[-] QUITTING... Invalid URL type.")
+    
+    def grab_source(self) -> str:
         return self.driver.page_source
 
-    def title(self):
+    def title(self) -> str:
         return self.driver.title
     
-    def find_elm_by_XPATH(self, locator, timeout=30):
+    def find_elm_by_XPATH(self, locator: str, timeout=30) -> selenium.webdriver.remote.webelement.WebElement:
+        '''Finds element via XPATH'''
         print("[+] Finding element via xpath...")
         return WebDriverWait(self.driver, timeout).until(EC.presence_of_element_located((By.XPATH, locator)))
     
-    def find_elm_by_PARTEXT(self, locator, timeout=30):
+    def find_elm_by_PARTEXT(self, locator: str, timeout=30) -> selenium.webdriver.remote.webelement.WebElement:
+        '''Finds element via partial link text'''
         print("[+] Finding element via partial text...")
         return WebDriverWait(self.driver, timeout).until(EC.presence_of_element_located((By.PARTIAL_LINK_TEXT, locator)))
 
-    def click_elm(self, elm):
+    def click_elm(self, elm: selenium.webdriver.remote.webelement.WebElement) -> None:
         '''Pass in a selenium.webdriver.remote.webelement.WebElement'''
         elm.click()
     
-    def download_file(self, download_locator, wait_time=45):
+    def download_file(self, download_locator: selenium.webdriver.remote.webelement.WebElement, wait_time=45) -> None:
         '''Throw in a while loop to make a loading bar or something like that, don't allow ".close()" to run during download'''
         import time
         download_dir = os.path.expanduser("./stathat-downloads")
@@ -92,8 +102,8 @@ class DataPuller:
             time.sleep(1)
         raise TimeoutError(f"Download did not complete within {wait_time} seconds")
     
-    def wait_for_download(self, file, timeout=45):
-        '''Kinda pointless not gonna lie, rip :( '''
+    def wait_for_download(self, file: str, timeout=45) -> None:
+        '''Kinda pointless not gonna lie, rip :('''
         import time
         download_dir = os.path.expanduser("./stathat-downloads")
         filepath = os.path.join(download_dir, file)
@@ -110,6 +120,6 @@ class DataPuller:
             time.sleep(1)
         raise TimeoutError(f"File {file} did not download within {timeout} seconds")
 
-    def close(self):
+    def close(self) -> None:
         if self.driver:
             self.driver.quit()

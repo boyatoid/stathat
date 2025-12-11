@@ -10,7 +10,8 @@ class logic:
         self.x = []
         self.y = []
 
-    def load_csv(self, filename):
+    def load_csv(self, filename) -> list:
+        '''Loads CSV file and returns a readable list'''
         self.data = []
         self.filename = filename
         with open(self.filename, "r") as f:
@@ -27,7 +28,8 @@ class logic:
                 self.data.append(converted)
         return self.data
     
-    def grab_cols(self, data):
+    def grab_cols(self, data) -> tuple:
+        '''Grabs two columns from the data based on user input'''
         num_cols = len(data[0])
 
         print("\nAvailable columns:")
@@ -41,7 +43,8 @@ class logic:
         self.y = [row[y_col] for row in data]
         return self.x, self.y
 
-    def show_graphs(self, x, y, choice):
+    def show_graphs(self, x, y, choice: int) -> None:
+        '''Displays and saves graphs'''
         graph_type = {
             1: ("plot", "Line Graph", "line_graph.png"),
             2: ("scatter", "Scatter Graph", "scatter_graph.png"),
@@ -60,7 +63,8 @@ class logic:
         plt.savefig(f"{self.graph_dir}/{file}")
         plt.show()
     
-    def clean_up(self):
+    def clean_up(self) -> None:
+        '''Cleans up script resources'''
         os.system('clear' if os.name == 'posix' or 'unix' else 'cls')
         print("[!] Cleaning up resources...")
         plt.close("all")

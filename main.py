@@ -8,6 +8,7 @@ logic = logic.logic()
 ChoiceMenu = menu.CoreMenu
 
 url = input("[?] What is the download URL?: ")
+
 try:
     dp.goto_url(url)
     page_source = dp.grab_source()
