@@ -30,3 +30,4 @@ class CoreMenu:
         print("3. Bar graph")
         self.input_process()
         self.graph_choice()
+        logic.clean_up()

@@ -38,25 +38,35 @@ class logic:
         return self.x, self.y
 
     def show_graphs(self, data, x, y, choice):
-        
-        if choice == "1":
+        if choice == 1:
+            print("choice 1 selected")
+            plt.figure()
             plt.plot(x, y)
             plt.title("Line Graph")
-            plt.show()
+            print("choice 1 selected - saving file")
             file = "line_graph.png"
             plt.savefig(file)
-
-        if choice == "2":
+            print("choice 1 selected - showing graph")
+            plt.show()
+        elif choice == 2:
+            plt.figure()
             plt.scatter(x, y)
             plt.title("Scatter Graph")
-            plt.show()
             file = "bar_graph.png"
             plt.savefig(file)
-
-        if choice == "3":
+            plt.show()
+        elif choice == 3:
+            plt.figure()
             plt.bar(x, y)
             plt.title("Bar Graph")
-            plt.show()
             file = "bar_graph.png"
             plt.savefig(file)
-
+            plt.show()
+        else:
+            print("[-] Invalid choice for graph type.")
+    
+    def clean_up(self):
+        plt.close('all')
+        print("[+] Cleaned up matplotlib resources.")
+        print("[+] Exiting logic module.")
+        print("[+] Goodbye!")
