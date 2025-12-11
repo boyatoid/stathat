@@ -7,7 +7,6 @@ dp = pull.DataPuller(browser_name="FireFox", driver_path="~/stathat", headless=T
 logic = logic.logic()
 ChoiceMenu = menu.CoreMenu
 
-#Main Program
 url = input("[?] What is the download URL?: ")
 try:
     dp.goto_url(url)
@@ -39,7 +38,9 @@ finally:
     dp.close()
 
 data = logic.load_csv(file_path)
+# testing url
 # https://catalog.data.gov/dataset/electric-vehicle-population-data
+
 print("\nFirst 5 rows:")
 for row in data[:5]:
     print(row)

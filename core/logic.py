@@ -1,8 +1,12 @@
 import csv
 import matplotlib.pyplot as plt
+import os
 
 class logic:
     def __init__(self):
+        self.graph_dir = os.path.abspath("./stathat-graphs")
+        if not os.path.exists(self.graph_dir):
+            os.mkdir(self.graph_dir)
         self.x = []
         self.y = []
 
@@ -39,33 +43,31 @@ class logic:
 
     def show_graphs(self, data, x, y, choice):
         if choice == 1:
-            print("choice 1 selected")
             plt.figure()
             plt.plot(x, y)
             plt.title("Line Graph")
-            print("choice 1 selected - saving file")
             file = "line_graph.png"
-            plt.savefig(file)
-            print("choice 1 selected - showing graph")
+            plt.savefig(f"{self.graph_dir}/{file}")
             plt.show()
         elif choice == 2:
             plt.figure()
             plt.scatter(x, y)
             plt.title("Scatter Graph")
-            file = "bar_graph.png"
-            plt.savefig(file)
+            file = "scatter_graph.png"
+            plt.savefig(f"{self.graph_dir}/{file}")
             plt.show()
         elif choice == 3:
             plt.figure()
             plt.bar(x, y)
             plt.title("Bar Graph")
             file = "bar_graph.png"
-            plt.savefig(file)
+            plt.savefig(f"{self.graph_dir}/{file}")
             plt.show()
         else:
             print("[-] Invalid choice for graph type.")
     
     def clean_up(self):
+        os.system('clear' if os.name == 'posix' or 'unix' else 'cls')
         plt.close('all')
         print("[+] Cleaned up matplotlib resources.")
         print("[+] Exiting logic module.")
