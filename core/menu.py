@@ -20,7 +20,7 @@ class CoreMenu:
     def graph_choice(self):
         choice = self.choice
         logic.grab_cols(self.data)
-        logic.show_graphs(self.data, logic.x, logic.y, choice)
+        logic.show_graphs(logic.x, logic.y, choice)
 
     def display_menu(self):
         print("================================")

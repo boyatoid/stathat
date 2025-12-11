@@ -41,30 +41,24 @@ class logic:
         self.y = [row[y_col] for row in data]
         return self.x, self.y
 
-    def show_graphs(self, data, x, y, choice):
-        if choice == 1:
-            plt.figure()
-            plt.plot(x, y)
-            plt.title("Line Graph")
-            file = "line_graph.png"
-            plt.savefig(f"{self.graph_dir}/{file}")
-            plt.show()
-        elif choice == 2:
-            plt.figure()
-            plt.scatter(x, y)
-            plt.title("Scatter Graph")
-            file = "scatter_graph.png"
-            plt.savefig(f"{self.graph_dir}/{file}")
-            plt.show()
-        elif choice == 3:
-            plt.figure()
-            plt.bar(x, y)
-            plt.title("Bar Graph")
-            file = "bar_graph.png"
-            plt.savefig(f"{self.graph_dir}/{file}")
-            plt.show()
-        else:
-            print("[-] Invalid choice for graph type.")
+    def show_graphs(self, x, y, choice):
+        graph_type = {
+            1: ("plot", "Line Graph", "line_graph.png"),
+            2: ("scatter", "Scatter Graph", "scatter_graph.png"),
+            3: ("bar", "Bar Graph", "bar_graph.png")
+        }
+        
+        if choice not in graph_type:
+            print("[-] QUITTING... Invalid graph choice.")
+            quit(1)
+        
+        plot_type, title, file = graph_type[choice]
+
+        plt.figure()
+        getattr(plt, plot_type)(x, y)
+        plt.title(title)
+        plt.savefig(f"{self.graph_dir}/{file}")
+        plt.show()
     
     def clean_up(self):
         os.system('clear' if os.name == 'posix' or 'unix' else 'cls')
