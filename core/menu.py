@@ -14,6 +14,7 @@ class CoreMenu:
         finally:
             if self.choice not in [1, 2, 3] or self.choice is None:
                 print("[-] QUITTING... Please select a valid option. (1, 2, or 3)")
+                exit(1)
             return self.choice
 
     def graph_choice(self):
