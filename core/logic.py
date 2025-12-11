@@ -34,8 +34,8 @@ class logic:
         for i in range(num_cols):
             print(f"{i} = Column {i}")
 
-        x_col = int(input("[+] Enter X column number: "))
-        y_col = int(input("[+] Enter Y column number: "))
+        x_col = int(input("[?] Enter X column number: "))
+        y_col = int(input("[?] Enter Y column number: "))
 
         self.x = [row[x_col] for row in data]
         self.y = [row[y_col] for row in data]
@@ -68,7 +68,8 @@ class logic:
     
     def clean_up(self):
         os.system('clear' if os.name == 'posix' or 'unix' else 'cls')
-        plt.close('all')
-        print("[+] Cleaned up matplotlib resources.")
-        print("[+] Exiting logic module.")
-        print("[+] Goodbye!")
+        print("[!] Cleaning up resources...")
+        plt.close("all")
+        print("[!] Cleaned up matplotlib resources.")
+        print("[!] Exiting logic module.")
+        print("[!] Goodbye!")

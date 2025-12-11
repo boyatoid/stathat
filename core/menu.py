@@ -7,7 +7,7 @@ class CoreMenu:
     
     def input_process(self):
         try:
-            self.choice = int(input("[+] Enter Number Choice: "))
+            self.choice = int(input("[?] Enter Number Choice: "))
         except ValueError:
             print("[-] Invalid input. Please enter a number.")
             self.choice = None
@@ -22,7 +22,9 @@ class CoreMenu:
         logic.show_graphs(self.data, logic.x, logic.y, choice)
 
     def display_menu(self):
-        print("=== Stathat Menu ===")
+        print("================================")
+        print("=|  Please Pick A Graph Type  |=")
+        print("================================")
         print("1. Line graph")
         print("2. Scatter graph")
         print("3. Bar graph")
