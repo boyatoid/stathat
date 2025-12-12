@@ -24,9 +24,18 @@ class CoreMenu:
         choice = self.choice
         logic.grab_cols(self.data)
         logic.show_graphs(logic.x, logic.y, choice)
+    
+    def print_row_prev(self, data: list) -> None:
+        '''Prints a row preview, with the data type of row **WIP**'''
+        print("[+] First 5 rows: ")
+        for row in data[:5]:
+            for item in row: row_data_type = type(item)
+            print(f'{row}\n, {row_data_type}')
+        
 
     def display_menu(self) -> None:
         '''Displays the menu'''
+        self.print_row_prev(self.data)
         print("================================")
         print("=|  Please Pick A Graph Type  |=")
         print("================================")

@@ -41,7 +41,20 @@ class logic:
 
         self.x = [row[x_col] for row in data]
         self.y = [row[y_col] for row in data]
-        return self.x, self.y
+        print(f"[+] Grabbed columns (X) {self.x[:1]} ({type(self.x[1]).__name__}) and (Y) {self.y[:1]} ({type(self.y[1]).__name__}).")
+        while True:
+            confirm = input("[?] Is this the correct selection? (y/n/q): ").lower()
+            if confirm == 'y':
+                print("[+] Columns confirmed.")
+                return self.x, self.y
+            elif confirm == 'n':
+                print("[-] Re-selecting columns.")
+                return self.grab_cols(data)
+            elif confirm == 'q':
+                quit("[-] QUITTING... User requested exit.")
+            else:
+                print("[-] Invalid input. Please enter 'y' or 'n'.")
+                quit("[-] QUITTING... Invalid confirmation input.")
 
     def show_graphs(self, x, y, choice: int) -> None:
         '''Displays and saves graphs'''
@@ -69,5 +82,17 @@ class logic:
         print("[!] Cleaning up resources...")
         plt.close("all")
         print("[!] Cleaned up matplotlib resources.")
-        print("[!] Exiting logic module.")
-        print("[!] Goodbye!")
+        while True:
+            confirm = input("[?] Clear download folder? (y/n): ").lower()
+            if confirm == 'y':
+                os.system(f'rm -rf ./stathat-downloads/*')
+                print("[+] Download folder cleared.")
+                print("[!] Exiting logic module.")
+                quit("[!] Goodbye!")
+            elif confirm == 'n':
+                print("[+] Continuing without deleting downloads.")
+                print("[!] Exiting logic module.")
+                quit("[!] Goodbye!")
+            else:
+                print("[-] Invalid input. Please enter 'y' or 'n'.")
+                quit("[-] QUITTING... Invalid confirmation input.")

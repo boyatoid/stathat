@@ -42,9 +42,5 @@ data = logic.load_csv(file_path)
 # testing url
 # https://catalog.data.gov/dataset/electric-vehicle-population-data
 
-print("\nFirst 5 rows:")
-for row in data[:5]:
-    print(row)
-
 menu_instance = ChoiceMenu(data)
 menu_instance.display_menu()
